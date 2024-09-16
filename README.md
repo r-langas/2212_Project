@@ -18,5 +18,5 @@ JavaFX uses FXML markup which will allow us to reduce the boilerplate code, addi
 
 ## Controller
 The Controller will mediate between the View and Model and perform all the functional logic.
-The user interacts wil the GUI, which will route to a function in the Controller to perform any logic.
-The Controller can then access the Model when it wants to modify or access data.
+The user interacts with the GUI, which will route to a function in the Controller to perform any logic.
+The Controller can then access the Model when it wants to modify or access data, the controller will then go back to the View to dynamically display pet stats.
