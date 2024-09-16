@@ -1,5 +1,4 @@
 # Intro
-***
 This project is a starting point for the 2212 group project, and will be modified to fulfill the project requirements.
 Currently it is implemented following the Model-View-Controller pattern in order to abstract and compartmentalize code into data logic, GUI, and functional logic repectively.
 This should make the project much more digestible (allowing for multiple people to work on the codebase at once) and reduce merge conflicts in Git.
