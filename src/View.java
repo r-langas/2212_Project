@@ -199,7 +199,7 @@ public class View extends JFrame {
         energyBar.setValue((int) (energy));
     }
 
-    public void DisplayStatus(Model.State state) {
+    public void DisplayStatus(State state) {
         statusLabel.setText(state.name());
     }
 }

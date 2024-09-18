@@ -5,7 +5,7 @@
  * user input, whenever a value is updated it will notify the controller
  */
 
-public class Model {
+public class Model implements ISubject {
 
     //********** Variables **********//
 
@@ -126,17 +126,17 @@ public class Model {
 
 
     //********** Observer **********//
-    // using the Observer pattern to trigger event in Controller class
 
-    private Controller _controller;
+    private IObserver _observer;
 
     /**
      * Attaches the controller instance to this Model
      *
-     * @param controller = the controller that is observing this model
+     * @param observer = the controller that is observing this model
      */
-    public void Subscribe(Controller controller) {
-        _controller = controller;
+    @Override
+    public void Subscribe(IObserver observer) {
+        _observer = observer;
     }
 
     /**
@@ -144,17 +144,8 @@ public class Model {
      *
      * @param property = property which was updated
      */
+    @Override
     public void Notify(Property property) {
-        _controller.Update(property);
-    }
-
-    // Enum to cleanly identify each property
-    public enum Property {
-        Level, Exp, Health, Energy, Status
-    }
-
-    // Enum to describe pet states
-    public enum State {
-        Good, Ok, Neutral, Poor, Bad
+        _observer.Update(property);
     }
 }

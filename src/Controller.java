@@ -4,7 +4,7 @@ import java.util.TimerTask;
 /**
  * Mediates between the Model and View, controlling all the functional logic
  */
-public class Controller {
+public class Controller implements IObserver {
 
     //********** View and Model Instances **********//
 
@@ -77,7 +77,8 @@ public class Controller {
      *
      * @param property = property that updated and published the notification
      */
-    public void Update(Model.Property property) {
+    @Override
+    public void Update(Property property) {
         switch(property) {
             case Level:
                 _view.DisplayLevel(_model.GetLevel());
