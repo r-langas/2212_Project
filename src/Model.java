@@ -9,19 +9,19 @@ public class Model implements ISubject {
 
     //********** Variables **********//
 
-    float _health, _energy, _exp;
-    int _level;
-    State _state;
+    float _health, _energy, _hunger, _happiness;
+    PetState _petState;
 
 
     //********** Constructor **********//
 
     public Model() {
-        _health = Constants.MAX_HEALTH;
-        _energy = Constants.MAX_ENERGY;
-        _exp = 0;
-        _level = 0;
-        _state = State.Good;
+        _health = Constants.MAX_STAT;
+        _energy = Constants.MAX_STAT;
+        _hunger = Constants.MAX_STAT;
+        _happiness = Constants.MAX_STAT;
+
+        _petState = PetState.Normal;
     }
 
 
@@ -29,80 +29,42 @@ public class Model implements ISubject {
 
     public float GetHealth() { return _health; }
     public float GetEnergy() { return _energy; }
-    public float GetExp() { return _exp; }
-    public int GetLevel() { return _level; }
-    public State GetState() { return _state; }
+    public float GetHunger() { return _hunger; }
+    public float GetHappiness() { return _happiness; }
+    public PetState GetState() { return _petState; }
 
-    /**
-     * Reduces the health of the pet to a minimum of 0
-     *
-     * @param damage = amount to be removed from health
-     */
-    public void TakeDamage(float damage) {
-        if (_health - damage >= 0) _health -= damage;
-        else _health = 0;
+    public void SetHealth(float modify) {
+        if (_health + modify > Constants.MAX_STAT) _health = Constants.MAX_STAT;
+        else if (_health + modify < 0) _health = 0;
+        else _health += modify;
 
         Notify(Property.Health);
         CheckStatus();
     }
-
-    /**
-     * Increases health of the pet to a maximum of MAX_HEALTH
-     *
-     * @param replenishedHealth = amount to be added to health
-     */
-    public void Heal(float replenishedHealth) {
-        if (_health + replenishedHealth <= Constants.MAX_HEALTH) _health += replenishedHealth;
-        else _health = Constants.MAX_HEALTH;
-
-        Notify(Property.Health);
-        CheckStatus();
-    }
-
-    /**
-     * Reduces energy of the pet to a minimum of zero
-     *
-     * @param energyLost = amount of energy lost
-     */
-    public void LoseEnergy(float energyLost) {
-        if (_energy - energyLost >= 0) _energy -= energyLost;
-        else _energy = 0;
+    public void SetEnergy(float modify) {
+        if (_energy + modify > Constants.MAX_STAT) _energy = Constants.MAX_STAT;
+        else if (_energy + modify < 0) _energy = 0;
+        else _energy += modify;
 
         Notify(Property.Energy);
         CheckStatus();
     }
+    public void SetHunger(float modify) {
+        if (_hunger + modify > Constants.MAX_STAT) _hunger = Constants.MAX_STAT;
+        else if (_hunger + modify < 0) _hunger = 0;
+        else _hunger += modify;
 
-    /**
-     * Increases energy of the pet to a maximum of MAX_ENERGY
-     *
-     * @param replenishedEnergy = amount of energy replenished
-     */
-    public void Rest(float replenishedEnergy) {
-        if (_energy + replenishedEnergy <= Constants.MAX_ENERGY) _energy += replenishedEnergy;
-        else _energy = Constants.MAX_ENERGY;
-
-        Notify(Property.Energy);
+        Notify(Property.Hunger);
         CheckStatus();
     }
+    public void SetHappiness(float modify) {
+        if (_happiness + modify > Constants.MAX_STAT) _happiness = Constants.MAX_STAT;
+        else if (_happiness + modify < 0) _happiness = 0;
+        else _happiness += modify;
 
-    /**
-     * Increases exp, once exp reaches MAX_EXP, increase level and reset exp
-     *
-     * @param expGained = amount of exp gained
-     */
-    public void GainExp(float expGained) {
-        if(_exp + expGained < Constants.MAX_EXP) _exp += expGained;
-        else {
-            _exp = 0;
-            if(_level < Constants.MAX_EXP) {
-                _level++;
-                Notify(Property.Level);
-            }
-        }
-
-        Notify(Property.Exp);
+        Notify(Property.Happiness);
+        CheckStatus();
     }
-
 
     //********** Helper Methods **********//
 
@@ -112,16 +74,21 @@ public class Model implements ISubject {
      * bars are filled
      */
     public void CheckStatus() {
-        int status = 0;
-        status += 2*((int)Math.min(_health, 99) / 33 + (int)Math.min(_energy, 99) / 33);
 
-        if (status >= 8) _state = State.Good;
-        else if (status >= 6) _state = State.Ok;
-        else if (status >= 4) _state = State.Neutral;
-        else if (status >= 2) _state = State.Poor;
-        else _state = State.Poor;
+        /*
+         *  WIP: Implement proper state checker
+         */
 
-        Notify(Property.Status);
+        /*
+        if (_health == 0) _petState = PetState.Dead;
+
+        if (_energy == 0) _petState = PetState.Sleep;
+
+        if (_happiness < Constants.MAX_STAT / 2) _petState = PetState.Angry;
+        else if (_petState == PetState.Angry) _petState = PetState.Normal;
+         */
+
+        Notify(Property.PetState);
     }
 
 

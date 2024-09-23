@@ -13,7 +13,7 @@ public interface Constants {
 
     // ********* Pet Stat Constants ********* //
 
-    float MAX_HEALTH = 100, MAX_ENERGY = 100, MAX_EXP = 100;
+    float MAX_STAT = 100;
 
 
     // ********* Event Modifier Constants ********* //

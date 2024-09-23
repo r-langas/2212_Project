@@ -1,3 +1,6 @@
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -8,8 +11,10 @@ public class Controller implements IObserver {
 
     //********** View and Model Instances **********//
 
-    private final Model _model;
-    private final View _view;
+    private Model _model;
+    private View _view;
+
+    private float _food, _gift;
 
 
     //********** Constructor **********//
@@ -22,18 +27,70 @@ public class Controller implements IObserver {
         _model.Subscribe(this);
 
         // adding listeners to View buttons
-        _view.AddEatFoodListener(e -> _model.Heal(_view.GetEatType()));
-        _view.AddRestListener(e -> _model.Rest(_view.GetRestType()));
-        _view.AddExerciseListener(e -> {
-            _model.TakeDamage(_view.GetExerciseType());
-            _model.LoseEnergy(_view.GetExerciseType());
-            _model.GainExp(_view.GetExerciseType());
-        });
+        _view.AddEatFoodListener(null);
+        _view.AddRestListener(null);
+        _view.AddExerciseListener(null);
+
+        // display health intially
+        _view.DisplayHealth(_model.GetHealth());
 
         // Timer that will reduce the pets energy at a fixed time interval
         TimerTask energyLoss = new EnergyLoss();
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(energyLoss, 0, Constants.TIME_INTERVAL);
+    }
+
+
+    //********** Event Listeners **********//
+    // Later implement these as static classes
+
+    private class SleepEvent implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            _model.SetEnergy(Constants.MAX_STAT);
+
+            // Thread.Sleep() for cooldown
+
+            // disable all actions
+        }
+    }
+
+    private class FeedEvent implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            _model.SetHunger(_food);
+        }
+    }
+
+    private class GiftEvent implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            _model.SetHappiness(_gift);
+        }
+    }
+
+    private class VetEvent implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            // implement vet event
+        }
+    }
+
+    private class PlayEvent implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            // implement play event
+        }
+    }
+
+    private class ExerciseEvent implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            _model.SetEnergy(-Constants.WALK);
+            _model.SetHunger(-Constants.WALK);
+            _model.SetHealth(Constants.WALK);
+
+        }
     }
 
 
@@ -50,6 +107,10 @@ public class Controller implements IObserver {
         );
     }
 
+    public void Sleep() {
+        // implement a sleep
+    }
+
 
     //********** TimerTask class **********//
 
@@ -61,8 +122,9 @@ public class Controller implements IObserver {
     private class EnergyLoss extends TimerTask {
         @Override
         public void run() {
-            _model.TakeDamage(Constants.ENERGY_LOSS);
-            _model.LoseEnergy(Constants.ENERGY_LOSS);
+            _model.SetHunger(-Constants.ENERGY_LOSS);
+            _model.SetEnergy(-Constants.ENERGY_LOSS);
+            _model.SetHappiness(-Constants.ENERGY_LOSS);
 
             ToggleExerciseButton();
         }
@@ -80,19 +142,21 @@ public class Controller implements IObserver {
     @Override
     public void Update(Property property) {
         switch(property) {
-            case Level:
-                _view.DisplayLevel(_model.GetLevel());
-                break;
-            case Exp:
-                _view.DisplayExp(_model.GetExp());
-                break;
             case Health:
                 _view.DisplayHealth(_model.GetHealth());
                 break;
             case Energy:
                 _view.DisplayEnergy(_model.GetEnergy());
                 break;
-            case Status:
+
+            case Hunger:
+                _view.DisplayHunger(_model.GetEnergy());
+                break;
+            case Happiness:
+                _view.DisplayHappiness(_model.GetHappiness());
+                break;
+
+            case PetState:
                 _view.DisplayStatus(_model.GetState());
         }
 

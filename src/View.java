@@ -43,10 +43,10 @@ public class View extends JFrame {
     private final ButtonGroup restGroup = new ButtonGroup();
     private final ButtonGroup exerciseGroup = new ButtonGroup();
 
-    private final JProgressBar levelBar = new JProgressBar();
-    private final JProgressBar expBar = new JProgressBar();
     private final JProgressBar healthBar = new JProgressBar();
     private final JProgressBar energyBar = new JProgressBar();
+    private final JProgressBar hungerBar = new JProgressBar();
+    private final JProgressBar happinessBar = new JProgressBar();
 
     private final JButton eatFoodButton = new JButton("Eat food");
     private final JButton restButton = new JButton("Rest");
@@ -113,14 +113,15 @@ public class View extends JFrame {
 
 
         // setup stat bars
-        levelBar.setForeground(Color.BLUE);
-        levelBar.setStringPainted(true);
-        expBar.setForeground(Color.GREEN);
-        expBar.setStringPainted(true);
         healthBar.setForeground(Color.RED);
         healthBar.setStringPainted(true);
         energyBar.setForeground(Color.YELLOW);
         energyBar.setStringPainted(true);
+        hungerBar.setForeground(Color.ORANGE);
+        hungerBar.setStringPainted(true);
+        happinessBar.setForeground(Color.GREEN);
+        happinessBar.setStringPainted(true);
+
 
         // pet stats panel
         JPanel statsGrid = new JPanel();
@@ -130,17 +131,16 @@ public class View extends JFrame {
         ));
         statsGrid.setLayout(new BoxLayout(statsGrid, BoxLayout.Y_AXIS));
 
-        statsGrid.add(new JLabel("Level:"));
-        statsGrid.add(levelBar);
-        statsGrid.add(Box.createRigidArea(new Dimension(10,0)));
-        statsGrid.add(new JLabel("Experience:"));
-        statsGrid.add(expBar);
-        statsGrid.add(Box.createRigidArea(new Dimension(10,0)));
         statsGrid.add(new JLabel("Health:"));
         statsGrid.add(healthBar);
         statsGrid.add(Box.createRigidArea(new Dimension(10,0)));
         statsGrid.add(new JLabel("Energy:"));
         statsGrid.add(energyBar);
+        statsGrid.add(new JLabel("Hunger:"));
+        statsGrid.add(hungerBar);
+        statsGrid.add(Box.createRigidArea(new Dimension(10,0)));
+        statsGrid.add(new JLabel("Happiness:"));
+        statsGrid.add(happinessBar);
 
         // wrapping panel to center it
         JPanel statsPanel = new JPanel(new GridBagLayout());
@@ -182,24 +182,19 @@ public class View extends JFrame {
 
     //********** Display Updating Methods **********//
 
-    public void DisplayLevel(int level) {
-        levelBar.setValue(level);
-        levelBar.setString("" + level);
-    }
-
-    public void DisplayExp(float exp) {
-        expBar.setValue((int) exp);
-    }
-
     public void DisplayHealth(float health) {
-        healthBar.setValue((int) (health));
+        healthBar.setValue((int)health);
     }
 
     public void DisplayEnergy(float energy) {
-        energyBar.setValue((int) (energy));
+        energyBar.setValue((int)energy);
     }
 
-    public void DisplayStatus(State state) {
+    public void DisplayHunger(float hunger) { hungerBar.setValue((int)hunger); }
+
+    public void DisplayHappiness(float happiness) {happinessBar.setValue((int)happiness); }
+
+    public void DisplayStatus(PetState state) {
         statusLabel.setText(state.name());
     }
 }
