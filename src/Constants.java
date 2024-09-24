@@ -7,27 +7,28 @@ public interface Constants {
 
     // ********* Timer Constants ********* //
 
-    float ENERGY_LOSS = 1;
-    long TIME_INTERVAL = 1000; // in nanoseconds
+    int ENERGY_LOSS = 1;
+    long TIME_INTERVAL = 1000; // in milliseconds
+
+    long TIMER_COOLDOWN = 2000;
 
 
     // ********* Pet Stat Constants ********* //
 
-    float MAX_STAT = 100;
+    int MAX_STAT = 100;
 
 
-    // ********* Event Modifier Constants ********* //
+    // ********* Event Options ********* //
 
-    // options for pet actions
-    float APPLE = 10;
-    float CHICKEN = 25;
-    float POTION = 50;
+    int APPLE = 10;
+    int CHICKEN = 25;
+    int POTION = 50;
 
-    float SIT = 10;
-    float NAP = 25;
-    float SLEEP = 50;
+    int SIT = 10;
+    int NAP = 25;
+    int SLEEP = 50;
 
-    float WALK = 25;
-    float RUN = 50;
+    int WALK = 25;
+    int RUN = 50;
 
 }

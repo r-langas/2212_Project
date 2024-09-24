@@ -1,3 +1,4 @@
 public enum Property {
-    Health, Hunger, Energy, Happiness, PetState
+    Health, Hunger, Energy, Happiness,
+    PetState
 }

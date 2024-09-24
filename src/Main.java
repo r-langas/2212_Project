@@ -25,9 +25,9 @@
 
 public class Main {
     public static void main(String[] args) {
-        Model petModel = new Model();
+        Pet dog = new Dog();
         View view = new View();
-        Controller controller = new Controller(petModel, view);
+        Controller controller = new Controller(dog, view);
 
         view.setVisible(true);
     }

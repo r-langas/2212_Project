@@ -48,9 +48,8 @@ public class View extends JFrame {
     private final JProgressBar hungerBar = new JProgressBar();
     private final JProgressBar happinessBar = new JProgressBar();
 
-    private final JButton eatFoodButton = new JButton("Eat food");
-    private final JButton restButton = new JButton("Rest");
-    public JButton exerciseButton = new JButton("Exercise");
+    public JButton sleepButton = new JButton("Sleep");
+    public JButton vetButton = new JButton("Go to Vet");
 
     private final JLabel statusLabel = new JLabel("Good");
 
@@ -67,6 +66,8 @@ public class View extends JFrame {
         headerPanel.add(new JLabel("Pet Game"));
         mainPanel.add(headerPanel, BorderLayout.PAGE_START);
 
+
+        /** This needs to be reworked
 
         // setup button groups
         appleOpt.setSelected(true);
@@ -103,7 +104,7 @@ public class View extends JFrame {
         // wrapping panel to center it
         JPanel optionsPanel = new JPanel(new GridBagLayout());
         optionsPanel.add(optionsGrid);
-        mainPanel.add(optionsPanel, BorderLayout.LINE_START);
+        mainPanel.add(optionsPanel, BorderLayout.LINE_START); */
 
 
         // Pet panel, using label to temporarily display status, WIP: sprites
@@ -151,9 +152,8 @@ public class View extends JFrame {
 
         // pet action panel
         JPanel actionPanel = new JPanel();
-        actionPanel.add(eatFoodButton)  ;
-        actionPanel.add(restButton);
-        actionPanel.add(exerciseButton);
+        actionPanel.add(sleepButton);
+        actionPanel.add(vetButton);
         mainPanel.add(actionPanel, BorderLayout.PAGE_END);
 
 
@@ -165,36 +165,48 @@ public class View extends JFrame {
 
 
     //********** Action Event Listeners **********//
+    /**
+     * when we move to JavaFX, these will not exist and all event handling
+     * exists solely in the controller
+     */
 
-    // Add listeners for GUI components (supplied by the controller)
-    public void AddEatFoodListener(ActionListener eatFoodListener) {
-        eatFoodButton.addActionListener(eatFoodListener);
+    public void AddSleepListener(ActionListener vetListener) {
+        sleepButton.addActionListener(vetListener);
     }
 
-    public void AddRestListener(ActionListener restListener) {
-        restButton.addActionListener(restListener);
+    public void AddVetListener(ActionListener vetListener) {
+        vetButton.addActionListener(vetListener);
     }
 
-    public void AddExerciseListener(ActionListener exerciseListener) {
-        exerciseButton.addActionListener(exerciseListener);
-    }
 
 
     //********** Display Updating Methods **********//
 
-    public void DisplayHealth(float health) {
-        healthBar.setValue((int)health);
+    public void DisplayHealth(int maxHealth, int health) {
+        healthBar.setMaximum(maxHealth);
+        healthBar.setValue(health);
+        healthBar.setString(String.format("%d / %d", health, maxHealth));
     }
 
-    public void DisplayEnergy(float energy) {
-        energyBar.setValue((int)energy);
+    public void DisplayEnergy(int energy) {
+        energyBar.setValue(energy);
     }
 
-    public void DisplayHunger(float hunger) { hungerBar.setValue((int)hunger); }
+    public void DisplayHunger(int hunger) { hungerBar.setValue(hunger); }
 
-    public void DisplayHappiness(float happiness) {happinessBar.setValue((int)happiness); }
+    public void DisplayHappiness(int happiness) {happinessBar.setValue(happiness); }
 
     public void DisplayStatus(PetState state) {
         statusLabel.setText(state.name());
+    }
+
+    public void ToggleVetButton() { vetButton.setEnabled(!vetButton.isEnabled());}
+    public void ToggleSleepState(boolean awaken) {
+        sleepButton.setEnabled(awaken);
+        vetButton.setEnabled(awaken);
+
+        // BUG to fix: if vetButton is currently on cool down, then when pet is
+        // put to sleep the vetButton cool down may activate vetButton before
+        // pet is awake, need to somehow kill the vewButton cool down thread
     }
 }
